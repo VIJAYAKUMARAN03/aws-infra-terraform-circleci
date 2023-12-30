@@ -236,7 +236,7 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 
 #s3
 resource "aws_s3_bucket" "test-bucket" {
-  bucket = "Centillion-bucket-learn-terraform-centillion-s3"
+  bucket = "centillion-bucket-learn-terraform--s3"
 
   tags = {
     Name        = "TF test bucket"
