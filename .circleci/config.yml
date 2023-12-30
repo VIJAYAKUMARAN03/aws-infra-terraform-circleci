@@ -29,17 +29,17 @@ jobs:
       working_directory: ~/repo
       steps:
         - checkout
-      - run:
-          name: Install AWS CLI
-          command: |
-            apk update
-            apk add --no-cache aws-cli
-      - run:
-          name: AWS CLI Configuration
-          command: |
-            aws configure set aws_access_key_id $aws_access_key
-            aws configure set aws_secret_access_key $aws_secret_key
-            aws configure set default.region $region
+        - run:
+            name: Install AWS CLI
+            command: |
+              apk update
+              apk add --no-cache aws-cli
+        - run:
+            name: AWS CLI Configuration
+            command: |
+              aws configure set aws_access_key_id $aws_access_key
+              aws configure set aws_secret_access_key $aws_secret_key
+              aws configure set default.region $region
         - run:
             name: Terraform Plan
             command: |
