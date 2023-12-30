@@ -47,6 +47,29 @@ jobs:
             terraform init
             terraform apply --auto-approve
 
+  Complete_Infra_Hold:
+    docker:
+      - image: hashicorp/terraform:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: On Hold
+          command: |
+            echo "Hold For Apply"
+
+  terraform_destroy:
+    docker:
+      - image: hashicorp/terraform:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Terraform Destroy & Output
+          command: |
+            terraform init
+            terraform destroy --auto-approve
+
 workflows:
   version: 2 
   Init-Apply-Output:
@@ -58,3 +81,10 @@ workflows:
       - terraform_apply_output :
           requires : 
             - terraform_plan
+      - Complete_Infra_Hold:
+          type: approval
+          requires:
+            - terraform_apply_output
+      - terraform_destroy :
+          requires : 
+            - Complete_Infra_Hold
