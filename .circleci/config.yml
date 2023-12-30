@@ -1,0 +1,60 @@
+version: 2.1
+
+jobs:
+  terraform_init:
+    docker:
+      - image: hashicorp/terraform:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install AWS CLI
+          command: |
+            apk update
+            apk add --no-cache aws-cli
+      - run:
+          name: AWS CLI Configuration
+          command: |
+            aws configure set aws_access_key_id $aws_access_key
+            aws configure set aws_secret_access_key $aws_secret_key
+            aws configure set default.region $region
+      - run:
+          name: Terraform Init
+          command: 
+              terraform init
+
+  terraform_plan:
+      docker:
+        - image: hashicorp/terraform:latest
+      working_directory: ~/repo
+      steps:
+        - checkout
+        - run:
+            name: Terraform Plan
+            command: |
+              terraform init
+              terraform plan
+
+  terraform_apply_output:
+    docker:
+      - image: hashicorp/terraform:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Terraform Apply & Output
+          command: |
+            terraform init
+            terraform apply --auto-approve
+
+workflows:
+  version: 2 
+  Init-Apply-Output:
+    jobs:
+      - terraform_init
+      - terraform_plan:
+          requires : 
+            - terraform_init
+      - terraform_apply_output :
+          requires : 
+            - terraform_plan
