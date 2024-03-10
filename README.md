@@ -31,8 +31,13 @@ Follow the steps below to run the code in your local machine:
 Clone the repository containing the Terraform code to your local environment and set it as your local repository.
 
 ```bash
-git clone https://github.com/VIJAYAKUMARAN03/basic-aws-terraform-circleci.git
-cd basic-aws-terraform-circleci
+git clone https://github.com/VIJAYAKUMARAN03/aws-infra-terraform-circleci.git
+```
+
+Navigate to the cloned directory:
+
+```bash
+cd aws-infra-terraform-circleci
 ```
 
 ### Step 2: Review the Variables:
@@ -100,8 +105,13 @@ Follow the steps below to set up Terraform and CircleCI integration for managing
 Clone the repository containing the Terraform code to your local environment and set it as your local repository.
 
 ```bash
-git clone https://github.com/VIJAYAKUMARAN03/basic-aws-terraform-circleci.git
-cd basic-aws-terraform-circleci
+git clone https://github.com/VIJAYAKUMARAN03/aws-infra-terraform-circleci.git
+```
+
+Navigate to the cloned directory:
+
+```bash
+cd aws-infra-terraform-circleci
 ```
 
 ### Step 2 : Create a New Repository
@@ -135,9 +145,13 @@ git add .
 Check and verify the values of the variables in variables.tf, qa.tfvars, dev.tfvars, and prod.tfvars files. Ensure to verify the instance_type values, especially.
 
 ### Step 8: Commit and Push Changes
-Commit your changes and push them to your repository.
+Commit your changes with appropriate commit message.
 ```bash
 git commit -m "Initial commit with Terraform files"
+```
+
+Push the commit to your repository.
+```bash
 git push origin main
 ```
 
