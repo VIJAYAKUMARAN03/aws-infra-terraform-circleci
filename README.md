@@ -142,7 +142,7 @@ git add .
 ```
 
 ### Step 7: Verify Configuration Files
-Check and verify the values of the variables in variables.tf, qa.tfvars, dev.tfvars, and prod.tfvars files. Ensure to verify the instance_type values, especially.
+Check and verify the values of the variables in variables.tf file. Ensure to verify the instance_type values, especially.
 
 ### Step 8: Commit and Push Changes
 Commit your changes with appropriate commit message.
