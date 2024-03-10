@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "tf-states-centillion"
+    bucket = "tf-states"
     key    = "dev.tfstate"
     region = "us-east-1"
   }
@@ -18,7 +18,7 @@ resource "aws_vpc" "my_vpc" {
   enable_dns_support   = true
   
   tags = {
-    Name = "Centillion-MySubnet"
+    Name = "MyVPC"
   }
 }
 
@@ -30,13 +30,13 @@ resource "aws_subnet" "my_subnet" {
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "Centillion-MySubnet"
+    Name = "MySubnet"
   }
 }
 
 #SECURITY GROUP
 resource "aws_security_group" "my_security_group" {
-  name        = "Centillion-MySecurityGroup"
+  name        = "MySecurityGroup"
   description = "Allow inbound HTTP traffic"
   vpc_id      = aws_vpc.my_vpc.id
 
@@ -67,7 +67,7 @@ resource "aws_vpc_endpoint" "api_gateway_vpc_endpoint" {
   vpc_id              = aws_vpc.my_vpc.id
   subnet_ids = [aws_subnet.my_subnet.id]
   tags = {
-    Name = "Centillion-api-gateway-vpc-endpoint"
+    Name = "api-gateway-vpc-endpoint"
   }
 }
 
@@ -93,7 +93,7 @@ resource "aws_api_gateway_rest_api" "rest_api" {
     }
   })
 
-  name              = "Centillion-api-gateway-name"
+  name              = "My-api-gateway"
   put_rest_api_mode = "merge"
 
   endpoint_configuration {
@@ -113,7 +113,7 @@ resource "aws_instance" "zoro-bastion-host" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "Centillion-ec2-bastion-host-${var.environment}"
+    Name = "My-ec2-bastion-host-${var.environment}"
   }
 }
 
@@ -131,7 +131,7 @@ data "aws_iam_policy_document" "glue_policy_document" {
 }
 
 resource "aws_iam_role" "glue_service_role" {
-  name               = "Centillion-${var.prefix}-glue-service-role-${var.environment}"
+  name               = "My-${var.prefix}-glue-service-role-${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.glue_policy_document.json
 }
 
@@ -141,7 +141,7 @@ resource "aws_iam_role_policy_attachment" "glue_service_role_policy_attachment" 
 }
 
 resource "aws_glue_job" "blogpost_job" {
-  name              = "Centillion-${var.prefix}-job-${var.environment}"
+  name              = "My-${var.prefix}-job-${var.environment}"
   role_arn          = aws_iam_role.glue_service_role.arn
   glue_version      = "3.0"
   number_of_workers = 2
@@ -164,7 +164,7 @@ resource "aws_glue_job" "blogpost_job" {
 #Lambda
 
 resource "aws_iam_role" "lambda_role" {
-  name               = "Centillion-terraform_aws_lambda_role"
+  name               = "My-terraform_aws_lambda_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -186,7 +186,7 @@ EOF
 
 resource "aws_iam_policy" "iam_policy_for_lambda" {
 
-  name        = "Centillion-aws_iam_policy_for_terraform_aws_lambda_role"
+  name        = "My-aws_iam_policy_for_terraform_aws_lambda_role"
   path        = "/"
   description = "AWS IAM Policy for managing aws lambda role"
   policy      = <<EOF
@@ -226,7 +226,7 @@ data "archive_file" "zip_the_python_code" {
 # In terraform ${path.module} is the current directory.
 resource "aws_lambda_function" "terraform_lambda_func" {
   filename      = "./python/hello-python.zip"
-  function_name = "Centillion-${var.function_name}"
+  function_name = "My-${var.function_name}"
   role          = aws_iam_role.lambda_role.arn
   handler       = "hello-python.lambda_handler"
   runtime       = "python3.11"
@@ -236,7 +236,7 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 
 #s3
 resource "aws_s3_bucket" "test-bucket" {
-  bucket = "centillion-bucket-learn-terraform--s3"
+  bucket = "my-bucket-learn-terraform-s3"
 
   tags = {
     Name        = "TF test bucket"
