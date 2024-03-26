@@ -69,17 +69,6 @@ jobs:
             terraform init
             terraform apply --auto-approve
 
-  Complete_Infra_Hold:
-    docker:
-      - image: hashicorp/terraform:latest
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run:
-          name: On Hold
-          command: |
-            echo "Hold For Apply"
-
   terraform_destroy:
     docker:
       - image: hashicorp/terraform:latest
